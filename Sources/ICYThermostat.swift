@@ -64,8 +64,6 @@ class ICYThermostat: HAP.Accessory.Thermostat {
         }
 
         self.thermostat.currentHeatingCoolingState.value = status.isHeating ? .heat : .off
-
-        self.thermostat.currentTemperature.value = Double(arc4random() % 20)
     }
 
     func updatePortal(_ status: ICY.ThermostatStatus) {
