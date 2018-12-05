@@ -3,6 +3,10 @@ import ICY
 import HAP
 import func Evergreen.getLogger
 
+#if os(Linux)
+    import Dispatch
+#endif
+
 let logger = getLogger("icy")
 
 class ICYThermostat: HAP.Accessory.Thermostat {
@@ -12,7 +16,7 @@ class ICYThermostat: HAP.Accessory.Thermostat {
 
     init(info: Service.Info, username: String, password: String) {
         super.init(info: info)
-
+        
         ICY.login(username: username, password: password) { result in
             do {
                 self.session = try result.unpack()
@@ -22,7 +26,7 @@ class ICYThermostat: HAP.Accessory.Thermostat {
             }
         }
 
-        timer.scheduleRepeating(deadline: .now(), interval: 5)
+        timer.scheduleRepeating(deadline: .now(), interval: 20)
         timer.setEventHandler(handler: {
             self.session?.getStatus { result in
                 do {
@@ -35,21 +39,25 @@ class ICYThermostat: HAP.Accessory.Thermostat {
             }
         })
 
-        thermostat.targetTemperature.onValueChange.append({ newValue in
+        thermostat.targetTemperature.onSetValue = { newValue in
             guard var status = self.status, let newValue = newValue else { return }
-            status.desiredTemperature = newValue
-            self.updatePortal(status)
-        })
+            if status.setting != .fixed {
+                status.setting = .comfort
+                status.desiredTemperature = newValue
+                self.updatePortal(status)
+            }
+        }
 
-        thermostat.targetHeatingCoolingState.onValueChange.append({ newValue in
+        thermostat.targetHeatingCoolingState.onSetValue = { newValue in
             guard var status = self.status, let newValue = newValue else { return }
             switch newValue {
-            case .heat, .auto: status.setting = .comfort
+            case .off: status.setting = .fixed
             case .cool: status.setting = .saving
-            case .off: status.setting = .away
+            case .heat, .auto: status.setting = .comfort
             }
             self.updatePortal(status)
-        })
+            self.thermostat.targetTemperature.value = status.desiredTemperature
+        }
     }
 
     func updateFromPortal() {
@@ -58,12 +66,15 @@ class ICYThermostat: HAP.Accessory.Thermostat {
         self.thermostat.targetTemperature.value = status.desiredTemperature
 
         switch status.setting {
-        case .comfort: self.thermostat.targetHeatingCoolingState.value = .auto
-        case .saving: self.thermostat.targetHeatingCoolingState.value = .cool
-        default: self.thermostat.targetHeatingCoolingState.value = .off
+        case .fixed: self.thermostat.targetHeatingCoolingState.value = .off
+        default: self.thermostat.targetHeatingCoolingState.value = .auto
         }
-
-        self.thermostat.currentHeatingCoolingState.value = status.isHeating ? .heat : .off
+        
+        switch (status.isHeating, status.setting) {
+        case (true, _): self.thermostat.currentHeatingCoolingState.value = .heat
+        case (_, .comfort): self.thermostat.currentHeatingCoolingState.value = .cool
+        default: self.thermostat.currentHeatingCoolingState.value = .off
+        }
     }
 
     func updatePortal(_ status: ICY.ThermostatStatus) {
