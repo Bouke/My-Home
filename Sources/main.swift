@@ -21,12 +21,14 @@ let device = HAP.Device(setupCode: "123-44-321", storage: FileStorage(filename: 
 let server = try HAP.Server(device: device, listenPort: 0)
 
 var keepRunning = true
-signal(SIGINT) { _ in
-    logger.info("Caught interrupt, stopping...")
+func stop() {
     DispatchQueue.main.async {
+        logger.info("Shutting down...")
         keepRunning = false
     }
 }
+signal(SIGINT) { _ in stop() }
+signal(SIGTERM) { _ in stop() }
 
 print()
 print("Scan the following QR code using your iPhone to pair this device:")
