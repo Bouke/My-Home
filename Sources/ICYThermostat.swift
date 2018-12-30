@@ -13,6 +13,9 @@ class ICYThermostat: HAP.Accessory.Thermostat {
     var session: ICY.Session? = nil
     var status: ICY.ThermostatStatus? = nil
     let timer = DispatchSource.makeTimerSource()
+    let defaultInterval: TimeInterval = 20
+    let maxBackoffInterval: TimeInterval = 640 // 20*2^5
+    var currentInterval: TimeInterval = 20
 
     init(info: Service.Info, username: String, password: String) {
         super.init(info: info)
@@ -26,15 +29,16 @@ class ICYThermostat: HAP.Accessory.Thermostat {
             }
         }
 
-        timer.scheduleRepeating(deadline: .now(), interval: 20)
+        timer.schedule(deadline: .now(), repeating: 30)
         timer.setEventHandler(handler: {
             self.session?.getStatus { result in
                 do {
                     self.status = try result.unpack()
                     self.updateFromPortal()
+                    self.rescheduleTimer(wasLastCallSuccessful: true)
                 } catch {
                     logger.error("Could not get status", error: error)
-                    self.timer.cancel()
+                    self.rescheduleTimer(wasLastCallSuccessful: false)
                 }
             }
         })
@@ -60,8 +64,25 @@ class ICYThermostat: HAP.Accessory.Thermostat {
         }
     }
 
+    func rescheduleTimer(wasLastCallSuccessful success: Bool) {
+        if success {
+            if currentInterval == defaultInterval {
+                return
+            }
+            currentInterval = defaultInterval
+            logger.info("Last call was successful, back to default interval of \(self.currentInterval) seconds")
+        } else {
+            currentInterval = min(currentInterval * 2, maxBackoffInterval)
+            logger.info("Last call was unsuccessful, backing off next call to \(self.currentInterval) seconds")
+        }
+        self.timer.schedule(deadline: .now() + .seconds(Int(currentInterval)), repeating: currentInterval)
+    }
+
     func updateFromPortal() {
         guard let status = status else { return }
+
+        logger.debug("Update from portal: (last seen: \(status.lastSeen), current: \(status.currentTemperature), desired: \(status.desiredTemperature), configuration: \(status.configuration))")
+
         self.thermostat.currentTemperature.value = status.currentTemperature
         self.thermostat.targetTemperature.value = status.desiredTemperature
 
