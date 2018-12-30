@@ -42,26 +42,37 @@ class ICYThermostat: HAP.Accessory.Thermostat {
                 }
             }
         })
+    }
 
-        thermostat.targetTemperature.onSetValue = { newValue in
-            guard var status = self.status, let newValue = newValue else { return }
-            if status.setting != .fixed {
-                status.setting = .comfort
-                status.desiredTemperature = newValue
-                self.updatePortal(status)
-            }
+    override func characteristic<T>(_ characteristic: GenericCharacteristic<T>,
+                           ofService service: Service,
+                           didChangeValue newValue: T?) {
+        if characteristic === thermostat.targetTemperature {
+            didChangeTargetTemperature(newValue: newValue as! TargetTemperature?)
+        } else if characteristic === thermostat.targetHeatingCoolingState {
+            didChangeTargetHeatingCoolingState(newValue: newValue as! TargetHeatingCoolingState?)
         }
+        super.characteristic(characteristic, ofService: service, didChangeValue: newValue)
+    }
 
-        thermostat.targetHeatingCoolingState.onSetValue = { newValue in
-            guard var status = self.status, let newValue = newValue else { return }
-            switch newValue {
-            case .off: status.setting = .fixed
-            case .cool: status.setting = .saving
-            case .heat, .auto: status.setting = .comfort
-            }
+    func didChangeTargetTemperature(newValue: Double?) {
+        guard var status = self.status, let newValue = newValue else { return }
+        if status.setting != .fixed {
+            status.setting = .comfort
+            status.desiredTemperature = round(newValue * 2) / 2 // round to 0.5°C
             self.updatePortal(status)
-            self.thermostat.targetTemperature.value = status.desiredTemperature
         }
+    }
+
+    func didChangeTargetHeatingCoolingState(newValue: TargetHeatingCoolingState?) {
+        guard var status = self.status, let newValue = newValue else { return }
+        switch newValue {
+        case .off: status.setting = .fixed
+        case .cool: status.setting = .saving
+        case .heat, .auto: status.setting = .comfort
+        }
+        self.updatePortal(status)
+        self.thermostat.targetTemperature.value = status.desiredTemperature
     }
 
     func rescheduleTimer(wasLastCallSuccessful success: Bool) {
