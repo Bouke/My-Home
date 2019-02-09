@@ -1,0 +1,106 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "BigInt",
+        "repositoryURL": "https://github.com/Boilertalk/BigInt.swift.git",
+        "state": {
+          "branch": null,
+          "revision": "fd9b2ebff53e7fd211a7d2b2ea682db300a8571b",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "Cryptor",
+        "repositoryURL": "https://github.com/IBM-Swift/BlueCryptor.git",
+        "state": {
+          "branch": null,
+          "revision": "25186dc1a53f3eb6d900853f659dff8b9af523aa",
+          "version": "1.0.23"
+        }
+      },
+      {
+        "package": "CLibSodium",
+        "repositoryURL": "https://github.com/Bouke/CLibSodium.git",
+        "state": {
+          "branch": null,
+          "revision": "bd9df04fd210e445546b3b44767a4574b5f506b7",
+          "version": "1.0.1"
+        }
+      },
+      {
+        "package": "Evergreen",
+        "repositoryURL": "https://github.com/knly/Evergreen.git",
+        "state": {
+          "branch": "swift4",
+          "revision": "592849f8a8aa1a53c4620b512761afa6476d893c",
+          "version": null
+        }
+      },
+      {
+        "package": "HAP",
+        "repositoryURL": "https://github.com/Bouke/HAP.git",
+        "state": {
+          "branch": "swift-nio-http",
+          "revision": "d0811ea484a5a6b64d50988616cd5d842e4d9f9c",
+          "version": null
+        }
+      },
+      {
+        "package": "HKDF",
+        "repositoryURL": "https://github.com/Bouke/HKDF.git",
+        "state": {
+          "branch": null,
+          "revision": "9b9e521b49e5b529c33f4abe35a00e144af51e00",
+          "version": "3.1.0"
+        }
+      },
+      {
+        "package": "ICY",
+        "repositoryURL": "https://github.com/Bouke/ICY.git",
+        "state": {
+          "branch": null,
+          "revision": "f00afc8d8c104990911645f2470de3f03a4e428a",
+          "version": "1.1.0"
+        }
+      },
+      {
+        "package": "Regex",
+        "repositoryURL": "https://github.com/crossroadlabs/Regex.git",
+        "state": {
+          "branch": null,
+          "revision": "f144250678e4c13f1d820ffa265a8326b25bcd86",
+          "version": "1.1.0"
+        }
+      },
+      {
+        "package": "SRP",
+        "repositoryURL": "https://github.com/Bouke/SRP.git",
+        "state": {
+          "branch": null,
+          "revision": "9f3d77de5dbaac52d30b1d51d75e853fabb8fa8b",
+          "version": "3.1.0"
+        }
+      },
+      {
+        "package": "swift-nio",
+        "repositoryURL": "https://github.com/apple/swift-nio.git",
+        "state": {
+          "branch": null,
+          "revision": "98434c1f1d687ff5a24d2cabfbd19b5c7d2d7a2f",
+          "version": "1.13.0"
+        }
+      },
+      {
+        "package": "swift-nio-zlib-support",
+        "repositoryURL": "https://github.com/apple/swift-nio-zlib-support.git",
+        "state": {
+          "branch": null,
+          "revision": "37760e9a52030bb9011972c5213c3350fa9d41fd",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

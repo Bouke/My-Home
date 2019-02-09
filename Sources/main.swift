@@ -40,5 +40,5 @@ while keepRunning {
     RunLoop.current.run(mode: .defaultRunLoopMode, before: Date.distantFuture)
 }
 
-server.stop()
+try server.stop()
 logger.info("Stopped")
