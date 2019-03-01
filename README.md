@@ -3,6 +3,8 @@ My DIY Homekit setup in Swift
 
 This repository is both a showcase of my [HAP](https://github.com/Bouke/HAP) package and implementation of my DIY Homekit setup. It shows how to add Homekit to an internet-connected thermostat (Essent / ICY e-thermostaat).
 
+[![Build Status](https://travis-ci.org/Bouke/My-Home.svg?branch=master)](https://travis-ci.org/Bouke/My-Home)
+
 ## Build
 
 ### MacOS
@@ -27,7 +29,7 @@ And then build and run the project itself:
 
 ## Run
 
-    ICY_USERNAME=xxx ICY_PASSWORD= swift run -c release
+    ICY_USERNAME=... ICY_PASSWORD=... swift run -c release
 
 ## Install
 
