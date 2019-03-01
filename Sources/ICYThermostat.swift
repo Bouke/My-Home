@@ -48,9 +48,9 @@ class ICYThermostat: HAP.Accessory.Thermostat {
                            ofService service: Service,
                            didChangeValue newValue: T?) {
         if characteristic === thermostat.targetTemperature {
-            didChangeTargetTemperature(newValue: newValue as! TargetTemperature?)
+            didChangeTargetTemperature(newValue: Double(newValue as! Float))
         } else if characteristic === thermostat.targetHeatingCoolingState {
-            didChangeTargetHeatingCoolingState(newValue: newValue as! TargetHeatingCoolingState?)
+            didChangeTargetHeatingCoolingState(newValue: newValue as! Enums.TargetHeatingCoolingState)
         }
         super.characteristic(characteristic, ofService: service, didChangeValue: newValue)
     }
@@ -64,15 +64,15 @@ class ICYThermostat: HAP.Accessory.Thermostat {
         }
     }
 
-    func didChangeTargetHeatingCoolingState(newValue: TargetHeatingCoolingState?) {
-        guard var status = self.status, let newValue = newValue else { return }
+    func didChangeTargetHeatingCoolingState(newValue: Enums.TargetHeatingCoolingState) {
+        guard var status = self.status else { return }
         switch newValue {
         case .off: status.setting = .fixed
         case .cool: status.setting = .saving
         case .heat, .auto: status.setting = .comfort
         }
         self.updatePortal(status)
-        self.thermostat.targetTemperature.value = status.desiredTemperature
+        self.thermostat.targetTemperature.value = Float(status.desiredTemperature)
     }
 
     func rescheduleTimer(wasLastCallSuccessful success: Bool) {
@@ -94,8 +94,8 @@ class ICYThermostat: HAP.Accessory.Thermostat {
 
         logger.debug("Update from portal: (last seen: \(status.lastSeen), current: \(status.currentTemperature), desired: \(status.desiredTemperature), configuration: \(status.configuration))")
 
-        self.thermostat.currentTemperature.value = status.currentTemperature
-        self.thermostat.targetTemperature.value = status.desiredTemperature
+        self.thermostat.currentTemperature.value = Float(status.currentTemperature)
+        self.thermostat.targetTemperature.value = Float(status.desiredTemperature)
 
         switch status.setting {
         case .fixed: self.thermostat.targetHeatingCoolingState.value = .off

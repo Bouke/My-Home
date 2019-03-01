@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/BlueCryptor.git",
         "state": {
           "branch": null,
-          "revision": "25186dc1a53f3eb6d900853f659dff8b9af523aa",
-          "version": "1.0.23"
+          "revision": "fe59cc1fcabb390bf9b3b6dd4f8cacc897d91cf6",
+          "version": "1.0.24"
         }
       },
       {
@@ -41,8 +41,8 @@
         "package": "HAP",
         "repositoryURL": "https://github.com/Bouke/HAP.git",
         "state": {
-          "branch": "swift-nio-http",
-          "revision": "d0811ea484a5a6b64d50988616cd5d842e4d9f9c",
+          "branch": "fix/decrypt-incomplete-frames",
+          "revision": "01fa66671f42ced299734ed86877a44d6bf60332",
           "version": null
         }
       },
@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "98434c1f1d687ff5a24d2cabfbd19b5c7d2d7a2f",
-          "version": "1.13.0"
+          "revision": "87dbd0216c47ea2e7ddb1b545271b716e03b943e",
+          "version": "1.13.1"
         }
       },
       {
