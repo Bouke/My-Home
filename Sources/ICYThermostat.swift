@@ -42,6 +42,10 @@ class ICYThermostat: HAP.Accessory.Thermostat {
                 }
             }
         })
+        
+        self.thermostat.targetTemperature.minValue = 10
+        self.thermostat.targetTemperature.maxValue = 25
+        self.thermostat.targetHeatingCoolingState.maxValue = Double(exactly: Enums.TargetHeatingCoolingState.heat.rawValue)
     }
 
     override func characteristic<T>(_ characteristic: GenericCharacteristic<T>,
@@ -67,8 +71,7 @@ class ICYThermostat: HAP.Accessory.Thermostat {
     func didChangeTargetHeatingCoolingState(newValue: Enums.TargetHeatingCoolingState) {
         guard var status = self.status else { return }
         switch newValue {
-        case .off: status.setting = .fixed
-        case .cool: status.setting = .saving
+        case .off, .cool: status.setting = .fixed
         case .heat, .auto: status.setting = .comfort
         }
         self.updatePortal(status)
@@ -98,14 +101,12 @@ class ICYThermostat: HAP.Accessory.Thermostat {
         self.thermostat.targetTemperature.value = Float(status.desiredTemperature)
 
         switch status.setting {
-        case .fixed: self.thermostat.targetHeatingCoolingState.value = .off
-        default: self.thermostat.targetHeatingCoolingState.value = .auto
-        }
-        
-        switch (status.isHeating, status.setting) {
-        case (true, _): self.thermostat.currentHeatingCoolingState.value = .heat
-        case (_, .comfort): self.thermostat.currentHeatingCoolingState.value = .cool
-        default: self.thermostat.currentHeatingCoolingState.value = .off
+        case .comfort:
+            self.thermostat.targetHeatingCoolingState.value = .heat
+            self.thermostat.currentHeatingCoolingState.value = .heat
+        default:
+            self.thermostat.targetHeatingCoolingState.value = .off
+            self.thermostat.currentHeatingCoolingState.value = .off
         }
     }
 
