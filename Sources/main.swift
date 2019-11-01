@@ -37,7 +37,7 @@ print(device.setupQRCode.asText)
 print()
 
 while keepRunning {
-    RunLoop.current.run(mode: .defaultRunLoopMode, before: Date.distantFuture)
+    RunLoop.current.run(mode: .default, before: Date.distantFuture)
 }
 
 try server.stop()

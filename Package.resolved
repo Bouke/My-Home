@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/IBM-Swift/BlueCryptor.git",
         "state": {
           "branch": null,
-          "revision": "fe59cc1fcabb390bf9b3b6dd4f8cacc897d91cf6",
-          "version": "1.0.24"
+          "revision": "12d2bf3ec7207ec3cd004b9582f69ef5fae1da3b",
+          "version": "1.0.32"
         }
       },
       {
@@ -24,26 +24,26 @@
         "repositoryURL": "https://github.com/Bouke/CLibSodium.git",
         "state": {
           "branch": null,
-          "revision": "bd9df04fd210e445546b3b44767a4574b5f506b7",
-          "version": "1.0.1"
+          "revision": "0244e3b03f41bb4e144ea290aeb6c494e5b7e9e0",
+          "version": "2.0.0"
         }
       },
       {
         "package": "Evergreen",
-        "repositoryURL": "https://github.com/knly/Evergreen.git",
+        "repositoryURL": "https://github.com/Bouke/Evergreen.git",
         "state": {
-          "branch": "swift4",
-          "revision": "592849f8a8aa1a53c4620b512761afa6476d893c",
-          "version": null
+          "branch": null,
+          "revision": "4d9d17d6efca12398de2b0a4c9c5a4eacc556e03",
+          "version": "2.0.0"
         }
       },
       {
         "package": "HAP",
         "repositoryURL": "https://github.com/Bouke/HAP.git",
         "state": {
-          "branch": "fix/decrypt-incomplete-frames",
-          "revision": "01fa66671f42ced299734ed86877a44d6bf60332",
-          "version": null
+          "branch": null,
+          "revision": "d0304c6cc49e46e2017768b884a3a1241e9bc6bf",
+          "version": "0.6.0"
         }
       },
       {
@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/Bouke/ICY.git",
         "state": {
           "branch": null,
-          "revision": "f00afc8d8c104990911645f2470de3f03a4e428a",
-          "version": "1.1.0"
+          "revision": "26ce9d7b0762561d4494a011f3a528bb4a39c2c9",
+          "version": "1.2.0"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/crossroadlabs/Regex.git",
         "state": {
           "branch": null,
-          "revision": "f144250678e4c13f1d820ffa265a8326b25bcd86",
-          "version": "1.1.0"
+          "revision": "166728756082a9cac6e4aed3ebbce8e41cb3a945",
+          "version": "1.2.0"
         }
       },
       {
@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "87dbd0216c47ea2e7ddb1b545271b716e03b943e",
-          "version": "1.13.1"
+          "revision": "ba7970fe396e8198b84c6c1b44b38a1d4e2eb6bd",
+          "version": "1.14.1"
         }
       },
       {
