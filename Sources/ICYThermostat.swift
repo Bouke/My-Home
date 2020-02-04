@@ -25,7 +25,7 @@ class ICYThermostat: HAP.Accessory.Thermostat {
                 self.session = try result.unpack()
                 self.timer.resume()
             } catch {
-                logger.error("Could not login", error: error)
+                logger.error("Could not login, not retrying", error: error)
             }
         }
 
