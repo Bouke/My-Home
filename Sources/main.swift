@@ -1,17 +1,16 @@
 import Foundation
-import ICY
 import HAP
-import func Evergreen.getLogger
+import ICY
+import Logging
+
+fileprivate let logger = Logger(label: "my-home")
 
 #if os(Linux)
     import Dispatch
 #endif
 
-getLogger("hap").logLevel = .debug
-getLogger("hap.encryption").logLevel = .warning
-
 guard let username = ProcessInfo.processInfo.environment["ICY_USERNAME"], let password = ProcessInfo.processInfo.environment["ICY_PASSWORD"] else {
-    print("Set ICY_USERNAME and ICY_PASSWORD environment variables")
+    logger.error("Set ICY_USERNAME and ICY_PASSWORD environment variables")
     exit(1)
 }
 

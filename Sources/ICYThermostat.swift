@@ -1,13 +1,13 @@
 import Foundation
-import ICY
 import HAP
-import func Evergreen.getLogger
+import ICY
+import Logging
 
 #if os(Linux)
     import Dispatch
 #endif
 
-let logger = getLogger("icy")
+fileprivate let logger = Logger(label: "icy")
 
 class ICYThermostat: HAP.Accessory.Thermostat {
     var session: ICY.Session? = nil
@@ -25,7 +25,7 @@ class ICYThermostat: HAP.Accessory.Thermostat {
                 self.session = try result.unpack()
                 self.timer.resume()
             } catch {
-                logger.error("Could not login, not retrying", error: error)
+                logger.error("Could not login, not retrying: \(error)")
             }
         }
 
@@ -37,7 +37,7 @@ class ICYThermostat: HAP.Accessory.Thermostat {
                     self.updateFromPortal()
                     self.rescheduleTimer(wasLastCallSuccessful: true)
                 } catch {
-                    logger.error("Could not get status", error: error)
+                    logger.error("Could not get status: \(error)")
                     self.rescheduleTimer(wasLastCallSuccessful: false)
                 }
             }
@@ -116,7 +116,7 @@ class ICYThermostat: HAP.Accessory.Thermostat {
                 try result.unpack()
                 self.status = status
             } catch {
-                logger.error("Could not update portal", error: error)
+                logger.error("Could not update portal: \(error)")
             }
         }
     }
