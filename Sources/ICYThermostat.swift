@@ -13,9 +13,9 @@ class ICYThermostat: HAP.Accessory.Thermostat {
     var session: ICY.Session? = nil
     var status: ICY.ThermostatStatus? = nil
     let timer = DispatchSource.makeTimerSource()
-    let defaultInterval: TimeInterval = 20
-    let maxBackoffInterval: TimeInterval = 640 // 20*2^5
-    var currentInterval: TimeInterval = 20
+    let defaultInterval: TimeInterval = 60
+    let maxBackoffInterval: TimeInterval = 900
+    var currentInterval: TimeInterval = 60
 
     init(info: Service.Info, username: String, password: String) {
         super.init(info: info)
@@ -29,7 +29,7 @@ class ICYThermostat: HAP.Accessory.Thermostat {
             }
         }
 
-        timer.schedule(deadline: .now(), repeating: 30)
+        timer.schedule(deadline: .now(), repeating: defaultInterval)
         timer.setEventHandler(handler: {
             self.session?.getStatus { result in
                 do {
