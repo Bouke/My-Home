@@ -34,8 +34,14 @@ class ICYThermostat: HAP.Accessory.Thermostat {
             self.session?.getStatus { result in
                 do {
                     self.status = try result.unpack()
+                    var success = true
+                    if self.status!.lastSeen < Date(timeIntervalSinceNow: -3600) {
+                        success = false
+                        let dateFormatter = ISO8601DateFormatter()
+                        logger.warning("Thermostat unreachable since \(dateFormatter.string(from: self.status!.lastSeen))")
+                    }
                     self.updateFromPortal()
-                    self.rescheduleTimer(wasLastCallSuccessful: true)
+                    self.rescheduleTimer(wasLastCallSuccessful: success)
                 } catch {
                     logger.error("Could not get status: \(error)")
                     self.rescheduleTimer(wasLastCallSuccessful: false)
@@ -87,7 +93,7 @@ class ICYThermostat: HAP.Accessory.Thermostat {
             logger.info("Last call was successful, back to default interval of \(self.currentInterval) seconds")
         } else {
             currentInterval = min(currentInterval * 2, maxBackoffInterval)
-            logger.info("Last call was unsuccessful, backing off next call to \(self.currentInterval) seconds")
+            logger.warning("Last call was unsuccessful, backing off next call to \(self.currentInterval) seconds")
         }
         self.timer.schedule(deadline: .now() + .seconds(Int(currentInterval)), repeating: currentInterval)
     }
@@ -99,6 +105,8 @@ class ICYThermostat: HAP.Accessory.Thermostat {
 
         self.thermostat.currentTemperature.value = Float(status.currentTemperature)
         self.thermostat.targetTemperature.value = Float(status.desiredTemperature)
+
+        self.thermostat
 
         switch status.setting {
         case .comfort:

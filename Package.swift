@@ -1,9 +1,12 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.1
 
 import PackageDescription
 
 let package = Package(
     name: "my-home",
+    platforms: [
+        .macOS(.v10_12)
+    ],
     products: [
         .executable(name: "my-home", targets: ["my-home"]),
     ],
