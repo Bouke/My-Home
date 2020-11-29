@@ -103,10 +103,13 @@ class ICYThermostat: HAP.Accessory.Thermostat {
 
         logger.debug("Update from portal: (last seen: \(status.lastSeen), current: \(status.currentTemperature), desired: \(status.desiredTemperature), configuration: \(status.configuration))")
 
+        reachable = status.lastSeen.timeIntervalSinceNow >= -120
+        if !reachable {
+            logger.error("Thermostat is unreachable, last seen \(-status.lastSeen.timeIntervalSinceNow) ago")
+        }
+
         self.thermostat.currentTemperature.value = Float(status.currentTemperature)
         self.thermostat.targetTemperature.value = Float(status.desiredTemperature)
-
-        self.thermostat
 
         switch status.setting {
         case .comfort:
