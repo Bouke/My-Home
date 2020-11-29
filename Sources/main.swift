@@ -19,6 +19,9 @@ let thermostat = ICYThermostat(info: .init(name: "Thermostaat", serialNumber: "1
 let device = HAP.Device(setupCode: "123-44-321", storage: FileStorage(filename: "configuration.json"), accessory: thermostat)
 let server = try HAP.Server(device: device, listenPort: 0)
 
+//let speaker = Accessory(info: Service.Info(name: "My Speaker", serialNumber: "2"), type: .speaker, services: [Service.TelevisionSpeaker(name: "My Speaker")])
+//let device = HAP.Device(bridgeInfo: Service.Info(name: "My Bridge", serialNumber: "0"), storage: FileStorage(filename: "configuration.json"),
+
 var keepRunning = true
 func stop() {
     DispatchQueue.main.async {
